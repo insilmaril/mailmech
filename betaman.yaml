@@ -1,0 +1,21 @@
+internal_domains:
+  - project.org
+
+listservers:
+  sf:
+    name: "Mailman SF"
+    url: https://lists.sourceforge.net/lists
+
+lists:
+- name: project-forum
+  alias: forum
+  pass: PASSWORD
+  comment: "General Discussion"
+  server: sf
+
+- name: project-devel
+  alias: devel
+  pass: PASSWORD
+  comment: "Developers"
+  server: sf
+
