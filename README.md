@@ -84,5 +84,6 @@ Todo
 ----
 
 - Add documentation
+- Add error handling
 - Gemify mailmech
 - Implement more of the mailman interface in mailmech
