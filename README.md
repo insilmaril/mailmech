@@ -26,6 +26,7 @@ Current list of options
         -s, --show                       Show subscriber list
         -m, --message STRING             Message to be logged
         -v, --no-verify                  Do not verify subscription
+        -V, --verbose                    Verbose output for debugging
         -l, --list a,b,c                 Select list by ALIAS
         -x, --stats                      Print statistics
         -X, --xstats                     Print extended statistics
@@ -39,10 +40,21 @@ gems, for example you will need the "mechanize" gem:
 
       gem install mechanize
 
-Modify the example configuration in betaman.yaml to your needs.
+Modify the example configuration in betaman.yaml to your needs, see the 
+example file in betaman.yaml
 
-Note: Passwords are currently saved as clear text, this may be a
-      security risk.
+Notes:
+
+- There are currently at least two potential security risks
+    - SSL certificates are currently not checked
+    - Passwords are currently saved as clear text
+- mailmech works with different mailman versions, but is a bit picky regarding the 
+  setting for the server. As of today (2013-11-14) I have
+    - mailman 2.1.9: http://...
+    - mailman 2.1.14: http://...
+    - mailman 2.1.16: https://...
+
+
 
 Examples
 --------
