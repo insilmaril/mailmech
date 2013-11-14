@@ -137,6 +137,10 @@ begin
       $options[:no_verify] = true
     end
 
+    $options[:verbose] = false
+    opts.on( '-V', '--verbose', 'Verbose output for debugging') do
+      $options[:verbose] = true
+    end
     $options[:selected_list] = []
     opts.on( '-l', '--list a,b,c', Array, 'Select list by ALIAS' ) do |list|
       $options[:selected_list] = list

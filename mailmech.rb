@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+require 'colorize'
 require 'mechanize'
 require 'logger'
 
@@ -38,10 +39,11 @@ class Mailmech
 
   def ensure_connection
     if !@connected then
-      puts "Connecting to #{@listname}..." if $options[:verbose]
       @connected = true
       @basepage = "#{@server}/admin/#{@listname}"
-      page = @agent.get @basepage
+      url = @basepage
+      puts "* mailmech: ensure_connection to #{url} ...".green if $options[:verbose]
+      page = @agent.get url
 
       login_form = page.form
       login_form.adminpw = @password
@@ -52,7 +54,13 @@ class Mailmech
 
   def reload_subscribers
     @subscriber_list = []
-    page = @agent.get("#{@server}/roster/#{@listname}")
+    url = "#{@server}/roster/#{@listname}"
+    puts "* mailmech: reload subscribers from #{url} ...".green if $options[:verbose]
+    begin
+      page = @agent.get url
+    rescue Mechanize::ResponseCodeError => e
+      page =e.page
+    end
 
     page.links_with(:href => /--at--/).each do |l|
       @subscriber_list << l.href
@@ -76,7 +84,12 @@ class Mailmech
   def delete (del)
     ensure_connection
 
-    page = @agent.get "#{@basepage}/members/remove"
+    url = "#{@basepage}/members/remove"
+
+    puts "* mailmech: unsubscribe #{url} ...".green if $options[:verbose]
+
+    page = @agent.get url
+
     submit_form = page.form
     submit_form.unsubscribees = del.join "\n"
     if !$options[:dryrun]
@@ -121,7 +134,10 @@ class Mailmech
   def subscribe (subscribees)
     ensure_connection
 
-    page = @agent.get "#{@basepage}/members/add"
+    url = "#{@basepage}/members/add"
+    puts "* mailmech: subscribe #{url} ...".green if $options[:verbose]
+
+    page = @agent.get url
     submit_form = page.form
     submit_form.subscribees = subscribees.join("\n")
     if !$options[:dryrun]
