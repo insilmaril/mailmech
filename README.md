@@ -60,7 +60,7 @@ Examples
 
 - Statistics overview:
 
-        lists.rb -F -x
+        lists.rb -x
     
         Statistics:
                         List |       Alias|       Total|        int.|        ext.|Domains ext.|             Comment
@@ -76,7 +76,7 @@ Examples
     
 - Count mails in your own mailarchive:    
 
-        lists.rb -F -X -l trans
+        lists.rb -X -l trans
         Processing 203 mails...
         Extended stats for "vym-translation":
           * Mails by internal senders (21):
