@@ -40,8 +40,7 @@ gems, for example you will need the "mechanize" gem:
 
       gem install mechanize
 
-Modify the example configuration in betaman.yaml to your needs, see the 
-example file in betaman.yaml
+Modify the example configuration in mailmech.yaml to your needs.
 
 Notes:
 
