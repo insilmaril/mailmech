@@ -127,9 +127,9 @@ begin
       exit
     end
 
-    $options[:show] = false
-    opts.on( '-s', '--show', 'Show subscriber list' ) do |list|
-      $options[:show] = true
+    $options[:selected_list] = []
+    opts.on( '-l', '--list a,b,c', Array, 'Select list by ALIAS' ) do |list|
+      $options[:selected_list] = list
     end
 
     $options[:message] = ""
@@ -142,13 +142,9 @@ begin
       $options[:no_verify] = true
     end
 
-    $options[:verbose] = false
-    opts.on( '-V', '--verbose', 'Verbose output for debugging') do
-      $options[:verbose] = true
-    end
-    $options[:selected_list] = []
-    opts.on( '-l', '--list a,b,c', Array, 'Select list by ALIAS' ) do |list|
-      $options[:selected_list] = list
+    $options[:show] = false
+    opts.on( '-s', '--show', 'Show subscriber list' ) do |list|
+      $options[:show] = true
     end
 
     $options[:stats] = false
@@ -159,6 +155,11 @@ begin
     $options[:xstats] = false
     opts.on( '-X', '--xstats', 'Print extended statistics' ) do
       $options[:xstats] = true
+    end
+
+    $options[:verbose] = false
+    opts.on( '-V', '--verbose', 'Verbose output for debugging') do
+      $options[:verbose] = true
     end
   end
   optparse.parse!
