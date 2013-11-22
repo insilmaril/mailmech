@@ -122,6 +122,11 @@ begin
       $options[:get_welcome_msg] = true
     end
 
+    opts.on( '-h', '--help', 'Display this screen') do
+      puts opts
+      exit
+    end
+
     $options[:show] = false
     opts.on( '-s', '--show', 'Show subscriber list' ) do |list|
       $options[:show] = true
