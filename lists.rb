@@ -142,6 +142,11 @@ begin
       $options[:no_verify] = true
     end
 
+    $options[:requests] = false
+    opts.on( '-r', '--requests', 'Go through admin requests interactively' ) do |list|
+      $options[:requests] = true
+    end
+
     $options[:show] = false
     opts.on( '-s', '--show', 'Show subscriber list' ) do |list|
       $options[:show] = true
@@ -228,8 +233,9 @@ begin
     list_selected?
 
     $options[:selected_list].each do |ml|
-      del = $lists.list(ml, :external)
+      del = $lists.subscribers($options[:selected_list], :external)
       if del.count > 0 
+        del.each {|d| puts d}
         puts "Really delete #{del.count} subsriptions from #{ml} (yes/no)?"
 
         if gets.chomp == 'yes' then
@@ -291,11 +297,6 @@ begin
     end 
   end 
 
-  if $options[:statistics] then
-    puts $lists.statistics($options[:selected_list])
-    exit
-  end
-
   if $options[:get_goodbye_msg] then
     list_selected?
 
@@ -317,9 +318,19 @@ begin
     exit
   end
 
+  if $options[:statistics] then
+    puts $lists.statistics($options[:selected_list])
+    exit
+  end
+
   if $options[:xstats] then
     list_selected?
     $options[:selected_list].each { |list| $lists.xstats(list) }
+    exit
+  end
+
+  if $options[:requests] then
+    $lists.requests($options[:selected_list])
     exit
   end
 

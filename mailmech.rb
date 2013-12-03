@@ -40,6 +40,7 @@ class Mailmech
     if !@connected then
       @connected = true
       @basepage = "#{@server}/admin/#{@listname}"
+      @admindb  = "#{@server}/admindb/#{@listname}"
       url = @basepage
       puts "* mailmech: ensure_connection to #{url} ...".green if $options[:verbose]
       page = @agent.get url
@@ -156,6 +157,17 @@ class Mailmech
   def domains(list)
     ret = list.map { |x| x.split('@').last }
     ret.sort.uniq
+  end
+
+  def requests
+    ensure_connection
+
+    url = @admindb
+
+    page = @agent.get url
+
+    rows = page.search('table')
+    pp rows
   end
 end
 
@@ -276,6 +288,24 @@ class MailingLists
     s
   end
 
+  def requests(aliases)
+    sublists = []
+    if aliases.empty? then
+      sublists = @lists
+    else
+      aliases.each do |a|
+        l = find_by_alias(a)
+        if !l.nil? then
+          sublists << l
+        end
+      end
+    end
+
+    sublists.each do |l|
+      l.requests
+    end
+  end
+
   require 'find'
   require 'mail'
   def xstats(listalias)
@@ -324,6 +354,34 @@ class MailingLists
     froms_ext.sort_by {|k,v| v}.reverse.each do |f|
       printf "     %3d %-40s\n", f[1], f[0]
     end
+  end
+
+  def subscribers(aliases = [], opt = {} )
+    sublists = []
+    if aliases.empty? then
+      sublists = @lists
+    else
+      aliases.each do |a|
+        l = find_by_alias(a)
+        if !l.nil? then
+          sublists << l
+        end
+      end
+    end
+
+    ret = []
+    sublists.each do |l|
+      slist = l.subscribers
+      slist_int, slist_ext = l.split(slist)
+      if opt == :external
+        ret += slist_ext
+      elsif opt == :internal
+        ret += slist_int
+      else
+        ret += slist_ext + slist_int
+      end
+    end
+    ret 
   end
 
   def to_s(aliases = [])  
