@@ -1,7 +1,7 @@
 mailmech
 ========
 
-Administration of mailman lists using ruby and mechanize.
+Administration of mailman lists on the command line or embedded into other software projects. Gnu mailman before version 3.0 didn't offer an API to let you manage subscriptions and list info, so this ruby program offers you command line access to manager your lists.
 
 mailmech has two parts: mailmech.rb is the library, which is used by the frontend lists.rb
 
